@@ -16,8 +16,13 @@ import android.widget.TextView;
 
 import android.util.Log;
 
+import com.android.volley.*;
+import com.android.volley.toolbox.*;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        requestQueue = Volley.newRequestQueue(this);
     }
 
     @Override
@@ -105,7 +112,26 @@ public class MainActivity extends AppCompatActivity
     public void onPingPressed(View view) {
         Log.d("PingButton", "ping button pressed");
 
-        TextView textView = (TextView) findViewById(R.id.textView2);
+        final TextView textView = (TextView) findViewById(R.id.textView2);
         textView.setText("ping button pressed");
+
+        String url = "http://10.0.2.2:3000";
+
+// Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        textView.setText("Response is: "+ response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                textView.setText("That didn't work!");
+            }
+        });
+
+        requestQueue.add(stringRequest);
     }
 }
