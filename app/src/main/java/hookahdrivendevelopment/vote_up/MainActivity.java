@@ -19,6 +19,12 @@ import android.util.Log;
 import com.android.volley.*;
 import com.android.volley.toolbox.*;
 
+import com.google.gson.*;
+
+import java.io.UnsupportedEncodingException;
+
+import hookahdrivendevelopment.vote_up.types.Vote;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -117,21 +123,64 @@ public class MainActivity extends AppCompatActivity
 
         String url = "http://10.0.2.2:3000";
 
+
+        Vote vote = new Vote();
+
+        Gson gson = new GsonBuilder().create();
+
+        final String requestBody = gson.toJson(vote);
+
 // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        textView.setText("Response is: "+ response);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                textView.setText("That didn't work!");
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    // Display the first 500 characters of the response string.
+                    textView.setText("Response is: "+ response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    textView.setText("That didn't work!");
+                }
             }
-        });
+        );
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+            new Response.Listener<String>()
+            {
+                @Override
+                public void onResponse(String response) {
+                    // response
+                    Log.d("Response", response);
+                }
+            },
+            new Response.ErrorListener()
+            {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // error
+                    Log.d("Error.Response", error.toString());
+                }
+            }
+        ) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    Log.d("tag", "unsupported error");
+                    return null;
+                }
+            }
+        };
 
         requestQueue.add(stringRequest);
+        requestQueue.add(postRequest);
     }
 }
