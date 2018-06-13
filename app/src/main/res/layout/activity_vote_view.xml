@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="hookahdrivendevelopment.vote_up.VoteViewActivity">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="383dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="1dp"
+        android:text="TextView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="2dp" />
+
+    <TextView
+        android:id="@+id/tvContent"
+        android:layout_width="378dp"
+        android:layout_height="316dp"
+        android:text="TextView"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+        tools:layout_editor_absoluteX="2dp" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:alignmentMode="alignBounds"
+        android:columnCount="2"
+        android:rowOrderPreserved="false"
+        app:layout_constraintTop_toBottomOf="@+id/tvContent"
+        tools:layout_editor_absoluteX="8dp">
+
+        <Button
+            android:id="@+id/bAnswer1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="top|left|fill_horizontal"
+            android:layout_rowWeight="1"
+            android:text="Button" />
+
+        <Button
+            android:id="@+id/bAnswer2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="top|right|fill_horizontal"
+            android:layout_rowWeight="1"
+            android:text="Button" />
+
+        <Button
+            android:id="@+id/bAnswer3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:layout_rowWeight="1"
+            android:text="Button" />
+
+        <Button
+            android:id="@+id/bAnswer4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:layout_rowWeight="1"
+            android:text="Button" />
+    </GridLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,8 +1,11 @@
 package hookahdrivendevelopment.vote_up;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,13 +25,18 @@ import com.android.volley.toolbox.*;
 import com.google.gson.*;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import hookahdrivendevelopment.vote_up.types.Vote;
+import hookahdrivendevelopment.vote_up.types.Votes;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     RequestQueue requestQueue;
+
+    private Votes mVotes;
+    RecyclerView rvContacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +44,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -55,7 +54,36 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        rvContacts = (RecyclerView) findViewById(R.id.rvVotes);
+        rvContacts.setLayoutManager(new LinearLayoutManager(this));
+
         requestQueue = Volley.newRequestQueue(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        String url = "http://10.0.2.2:3000";
+        StringRequest getRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.d("tag", response);
+                    Gson gson = new GsonBuilder().create();
+                    mVotes = gson.fromJson(response, Votes.class);
+                    VotesAdapter adapter = new VotesAdapter(mVotes);
+                    rvContacts.setAdapter(adapter);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //textView.setText("That didn't work!");
+                }
+            }
+        );
+
+        requestQueue.add(getRequest);
     }
 
     @Override
@@ -115,72 +143,8 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void onPingPressed(View view) {
-        Log.d("PingButton", "ping button pressed");
-
-        final TextView textView = (TextView) findViewById(R.id.textView2);
-        textView.setText("ping button pressed");
-
-        String url = "http://10.0.2.2:3000";
-
-
-        Vote vote = new Vote();
-
-        Gson gson = new GsonBuilder().create();
-
-        final String requestBody = gson.toJson(vote);
-
-// Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-            new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    // Display the first 500 characters of the response string.
-                    textView.setText("Response is: "+ response);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    textView.setText("That didn't work!");
-                }
-            }
-        );
-
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-            new Response.Listener<String>()
-            {
-                @Override
-                public void onResponse(String response) {
-                    // response
-                    Log.d("Response", response);
-                }
-            },
-            new Response.ErrorListener()
-            {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    // error
-                    Log.d("Error.Response", error.toString());
-                }
-            }
-        ) {
-            @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    Log.d("tag", "unsupported error");
-                    return null;
-                }
-            }
-        };
-
-        requestQueue.add(stringRequest);
-        requestQueue.add(postRequest);
+    public void createNewVote(View view) {
+        Intent myIntent = new Intent(MainActivity.this, VoteCreateActivity.class);
+        MainActivity.this.startActivity(myIntent);
     }
 }
