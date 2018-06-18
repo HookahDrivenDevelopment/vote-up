@@ -1,15 +1,19 @@
 package hookahdrivendevelopment.vote_up.types;
 
 import java.nio.ByteBuffer;
+import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static java.lang.System.*;
 
 /**
  * Created by timur on 27/05/2018.
  */
 
 public class Vote {
+    public long id;
     public String title = "title";
     public String author = "author";
     public Date created;
@@ -22,6 +26,7 @@ public class Vote {
     public List<Answer> answers;
 
     public Vote() {
+        id = currentTimeMillis();
         answers = new ArrayList<Answer>();
     }
 

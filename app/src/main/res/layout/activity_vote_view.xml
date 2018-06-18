@@ -40,6 +40,7 @@
             android:layout_columnWeight="1"
             android:layout_gravity="top|left|fill_horizontal"
             android:layout_rowWeight="1"
+            android:onClick="onAnswer1Clicked"
             android:text="Button" />
 
         <Button
@@ -49,6 +50,7 @@
             android:layout_columnWeight="1"
             android:layout_gravity="top|right|fill_horizontal"
             android:layout_rowWeight="1"
+            android:onClick="onAnswer2Clicked"
             android:text="Button" />
 
         <Button
@@ -58,6 +60,7 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill_horizontal"
             android:layout_rowWeight="1"
+            android:onClick="onAnswer3Clicked"
             android:text="Button" />
 
         <Button
@@ -67,6 +70,7 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill_horizontal"
             android:layout_rowWeight="1"
+            android:onClick="onAnswer4Clicked"
             android:text="Button" />
     </GridLayout>
 

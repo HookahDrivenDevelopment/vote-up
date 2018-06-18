@@ -35,13 +35,13 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Gson gson = new GsonBuilder().create();
-                    final String jsonVote = gson.toJson(mVote);
+                Gson gson = new GsonBuilder().create();
+                final String jsonVote = gson.toJson(mVote);
 
-                    Intent myIntent = new Intent(view.getContext(), VoteViewActivity.class);
-                    myIntent.putExtra("vote", jsonVote);
+                Intent myIntent = new Intent(view.getContext(), VoteViewActivity.class);
+                myIntent.putExtra("vote", jsonVote);
 
-                    view.getContext().startActivity(myIntent);
+                view.getContext().startActivity(myIntent);
                 }
             });
         }
